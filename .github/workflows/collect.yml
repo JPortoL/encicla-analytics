@@ -1,0 +1,50 @@
+name: collect
+
+on:
+  workflow_dispatch:
+  # Enable after the manual run succeeds:
+  # schedule:
+  #   - cron: "2-57/5 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - uses: actions/checkout@v4
+        with:
+          ref: data
+          path: data-branch
+
+      - name: Collect snapshot
+        run: |
+          DAY=$(date -u +%F)
+          STAMP=$(date -u +%Y%m%dT%H%M%SZ)
+          mkdir -p "data-branch/snapshots/$DAY"
+          python src/collect.py --output "data-branch/snapshots/$DAY/$STAMP.csv"
+
+      - name: Commit snapshot
+        working-directory: data-branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "data: snapshot $(date -u +%FT%TZ)"
+          git push

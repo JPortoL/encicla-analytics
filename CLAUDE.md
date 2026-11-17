@@ -39,4 +39,11 @@ No he verificado que el endpoint siga activo: probarlo antes de construir nada.
 - Explicar brevemente cada cambio importante antes de hacerlo.
 
 ## Estado actual
-Nada implementado. Siguiente paso: collect.py y prueba local.
+- [x] Repo creado y publicado (JPortoL/encicla-analytics, ramas main y data).
+- [x] src/collect.py escrito y probado en local.
+- [x] Workflow manual (.github/workflows/collect.yml) escrito.
+- [ ] Ejecutar el workflow manualmente en GitHub y confirmar que la API responde desde sus servidores.
+- [ ] Activar el cron (hoy comentado en el workflow).
+- [ ] Verificar bikes > capacity con datos completos y documentar el tratamiento en docs/decisions.md.
+- [ ] Modelo en estrella y dashboard en Power BI.
+- [ ] README.
