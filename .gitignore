@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local test output (real data lives on the `data` branch)
+data/*
+!data/.gitkeep
+
+# Power BI temp files
+*.pbix.tmp
+.pbi/
+
+# Secrets and editor files
+.env
+.vscode/
+.idea/
